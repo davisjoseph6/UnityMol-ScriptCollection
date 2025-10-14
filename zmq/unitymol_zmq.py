@@ -213,3 +213,26 @@ Cleans the text by removing HTML-like tags and specific substrings.
         except Exception as e:
             logger.error(f"Connection test failed: {e}")
             return False
+
+
+
+# Example usage
+if __name__ == "__main__":
+    # Create a UnityMolZMQ instance
+    unitymol = UnityMolZMQ()
+    
+    # Test the connection
+    if unitymol.test_connection():
+        print("Successfully connected to UnityMol")
+        
+        # Example: Get the list of selections
+        result = unitymol.send_command("getSelectionListString()")
+        if result['success']:
+            print(f"Selections: {result['result']}")
+        else:
+            print(f"Error: {result.get('stdout', 'Unknown error')}")
+            
+        # Disconnect when done
+        unitymol.disconnect()
+    else:
+        print("Failed to connect to UnityMol. Make sure it's running with the ZMQ server enabled.")
